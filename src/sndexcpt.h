@@ -5,7 +5,6 @@ namespace Soundscape {
 class Exception : public std::exception {
 public:
     virtual const char* what() const;
-    virtual ~Exception() {}
 protected:
     Exception(const char* format, ...);
 private:
