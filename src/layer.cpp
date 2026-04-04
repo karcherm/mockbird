@@ -69,6 +69,7 @@ InstrumentLayer InstrumentLayer::parse(const char* input)
         char* endptr;
         if (*input == '[')
         {
+            input++;
             if (std::strncmp(input, "key", 3) == 0)
                 layer.dispatch_on_volume = false;
             else if (std::strncmp(input, "vol", 3) == 0)
