@@ -9,7 +9,7 @@ using namespace Soundscape;
 
 const char* const InstrumentLayer::pan_keyword[] = {
     "lfo1", "lfo2", "env1", "ukey",
-    "skey", "vol", "rnd", "mod"
+    "skey", "vel", "rnd", "mod"
 };
 const std::uint8_t InstrumentLayer::endian_remap[] = {
     1, 0, 3, 2, 4, 5, 6, 7
@@ -24,7 +24,7 @@ char* InstrumentLayer::format(char* target)
     std::size_t n;
     if (min_val != 0 || max_val != 127) {
         n = std::sprintf(target, "[%s %d-%d] ",
-            dispatch_on_volume ? "vol" : "key", min_val, max_val);
+            dispatch_on_velocity ? "vel" : "key", min_val, max_val);
         target += n;
     }
     n = std::sprintf(target, "%d -%d%s%sdb", patch,
@@ -71,20 +71,20 @@ InstrumentLayer InstrumentLayer::parse(const char* input)
         {
             input++;
             if (std::strncmp(input, "key", 3) == 0)
-                layer.dispatch_on_volume = false;
-            else if (std::strncmp(input, "vol", 3) == 0)
-                layer.dispatch_on_volume = true;
+                layer.dispatch_on_velocity = false;
+            else if (std::strncmp(input, "vel", 3) == 0)
+                layer.dispatch_on_velocity = true;
             else
-                throw std::runtime_error("layer condition must be key or vol");
+                throw std::runtime_error("layer condition must be key or vel");
             input = skip_spaces(input + 3);
             unsigned long min = std::strtoul(input, &endptr, 10);
             if (min > 127)
-                throw std::overflow_error("min key or vol above 127");
+                throw std::overflow_error("min key or velocity above 127");
             unsigned long max = min;
             if (*endptr == '-') {
                 max = std::strtoul(endptr + 1, &endptr, 10);
                 if (max > 127)
-                    throw std::overflow_error("max key or vol above 127");
+                    throw std::overflow_error("max key or velocity above 127");
                 if (max < min)
                     throw std::runtime_error("range max below range min");
                 input = endptr;
@@ -96,7 +96,7 @@ InstrumentLayer InstrumentLayer::parse(const char* input)
             input = skip_spaces(input + 1);
         } else {
             layer.min_val = 0;
-            layer.dispatch_on_volume = false;
+            layer.dispatch_on_velocity = false;
             layer.max_val = 127;
         }
         unsigned long patchnr = std::strtoul(input, &endptr, 10);
