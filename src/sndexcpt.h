@@ -33,7 +33,7 @@ public:
 
 class UnexpectedEvent : public Exception {
 public:
-    UnexpectedEvent(std::uint8_t error_code);
+    UnexpectedEvent(std::uint8_t event);
 };
 
 class Timeout : public Exception {
