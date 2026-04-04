@@ -6,3 +6,6 @@
 # buildsystem temporary file
 *.lnk
 *.err
+
+# generated documentation
+doc
