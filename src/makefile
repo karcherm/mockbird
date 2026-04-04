@@ -10,5 +10,5 @@ mockbird.exe: $(OBJ)
     wlink  @mockbird.lnk
 
 .cpp.obj: .AUTODEPEND
-    wpp $(CXXFLAGS) $[*
+    wpp $(CXXFLAGS) -fo=$[*.obj $[*
 
